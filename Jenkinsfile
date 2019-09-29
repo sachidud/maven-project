@@ -17,7 +17,7 @@ stages
       stage ("testing stage")
 	{
 	      steps{
-                   withMaven(maven: 'LocalMaven')
+                   withMaven(maven : 'LocalMaven')
 		      {
                         sh 'mvn test' 
                       }
