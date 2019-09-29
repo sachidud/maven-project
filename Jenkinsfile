@@ -59,7 +59,7 @@ sh 'mvn install'
  {
     sshagent (['52.56.122.178']) 
     {
-      sh 'scp -o StrictHostKeyChecking=no **/*.war ec2-user@52.56.122.178:/var/lib/tomcat/webapps'
+      sh 'scp -o StrictHostKeyChecking=no */target/*.war ec2-user@52.56.122.178:/var/lib/tomcat/webapps'
      }
   }
  }
