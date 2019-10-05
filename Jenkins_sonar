@@ -22,7 +22,7 @@ pipeline
 {steps
  {withSonarQubeEnv('sonar')
    {withMaven(maven : 'LocalMaven')
-    {sh 'mvn clean install sonar:sonar'
+    {sh 'clean install sonar:sonar'
     }}}}
  {stage ('deploy to tomcat')
 {steps
