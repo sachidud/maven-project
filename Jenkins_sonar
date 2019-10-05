@@ -1,23 +1,27 @@
-pipeline
 {
+pipeline
  agent any
+ 
  stages
  {
-stage ("scm checkout")
-{
-  git 'https://github.com/sachidud/maven-project'
-}
-}
-{
-stage ("Code Test") {
-
-steps {
-withMaven(maven : 'LocalMaven')
-    {
-    sh  'mvn test'
-}
+   stage ("scm checkout") 
+   {
+     git 'https://github.com/rakshit2607/maven-project'
+   }
  }
-               }
+ 
+ 
+{
+stage ("Code Test") 
+ {
+  steps
+  {
+       withMaven(maven : 'LocalMaven')
+    {
+      sh  'mvn test'
+     }
+   }
+ }
 }
 
 
@@ -48,18 +52,34 @@ sh 'mvn install'
              }
 }
 
-{
-stage('build && SonarQube analysis)
-{
- steps
  {
-   withSonarQubeEnv('sonar')
+ stage ('deploy to tomcat')
+{
+  steps
+ {
+    sshagent (['52.56.122.178']) 
     {
-	 withMaven(maven :'LocalMaven')
-	 {
-	   sh 'mvn clean package sonar:sonar'
-	   }
-	 }
-  }	 
+      sh 'scp -o StrictHostKeyChecking=no */target/*.war ec2-user@52.56.122.178:/var/lib/tomcat/webapps'
+     }
+  }
+ }
+ }
+
+
+{
+stage ('build && SonarQube analysis) 
+ {
+  steps
+  {
+       withSonarQubeEnv('sonar')
+    {
+	withMaven(maven :'LocalMaven')
+      {
+       sh 'mvn clean package sonar:sonar'
+	  }
+	}
+   }
+ }
 }
+
 }
