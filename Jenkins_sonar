@@ -8,28 +8,30 @@ pipeline
    {
      git 'https://github.com/sachidud/maven-project'
 	 
-   }}
-{stage ("Code Test") 
+   }
+ }
+{
+ stage ("Code Test") 
  {steps
   {withMaven(maven : 'LocalMaven')
     { sh  'mvn test'
-     }}}}
-{stage ("Package") 
+     }}}
+stage ("Package") 
 {steps
 {withMaven(maven : 'LocalMaven')
    {sh 'mvn package'
-   }}}}
-{stage ("sonar & Install") 
+   }}}
+stage ("sonar & Install") 
 {steps
  {withSonarQubeEnv('sonar')
    {withMaven(maven : 'LocalMaven')
     {sh 'mvn clean install sonar:sonar'
     }}}}
- {stage ('deploy to tomcat')
+ stage ('deploy to tomcat')
 {steps
  {sshagent (['52.56.122.178']) 
     {sh 'scp -o StrictHostKeyChecking=no */target/*.war ec2-user@52.56.122.178:/var/lib/tomcat/webapps'
-     }}}}
+     }}}
 
 }
 }
