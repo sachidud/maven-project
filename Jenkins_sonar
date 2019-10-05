@@ -69,13 +69,13 @@ steps
 
 
 {
-stage ('build && SonarQube analysis) 
+stage ('build && SonarQube analysis') 
  {
   steps
   {
        withSonarQubeEnv('sonar')
     {
-	withMaven(maven :'LocalMaven')
+	  withMaven(maven : 'LocalMaven')
       {
        sh 'mvn clean package sonar:sonar'
 	  }
