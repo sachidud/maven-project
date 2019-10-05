@@ -26,30 +26,32 @@ stage ("Code Test")
 
 
 {
-stage ("Package") {
-
-steps {
-withMaven(maven : 'LocalMaven')
+stage ("Package") 
+{
+steps
+ {
+  withMaven(maven : 'LocalMaven')
    {
-   sh 'mvn package'
+    sh 'mvn package'
    }
-
   }
-                 }
+}
 }
 
 
 
 {
-stage ("Install") {
+stage ("Install") 
+{
 
-steps {
-withMaven(maven : 'LocalMaven')
+steps
+ {
+   withMaven(maven : 'LocalMaven')
     {
-sh 'mvn install'
-}
+     sh 'mvn install'
+    }
  }
-             }
+}
 }
 
  {
