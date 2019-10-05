@@ -17,6 +17,13 @@ pipeline
 {withMaven(maven : 'LocalMaven')
    {sh 'mvn package'
    }}}}
+{stage ('build && SonarQube analysis') 
+ {steps
+  {withSonarQubeEnv('sonar')
+    {withMaven(maven : 'LocalMaven')
+      {sh 'mvn clean package sonar:sonar'
+	  }}}}}
+
 {stage ("Install") 
 {steps
  {withMaven(maven : 'LocalMaven')
@@ -27,11 +34,5 @@ pipeline
  {sshagent (['52.56.122.178']) 
     {sh 'scp -o StrictHostKeyChecking=no */target/*.war ec2-user@52.56.122.178:/var/lib/tomcat/webapps'
      }}}}
-{stage ('build && SonarQube analysis') 
- {steps
-  {withSonarQubeEnv('sonar')
-    {withMaven(maven : 'LocalMaven')
-      {sh 'mvn clean package sonar:sonar'
-	  }}}}}
 
 }
